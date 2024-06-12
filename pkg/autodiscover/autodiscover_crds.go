@@ -60,5 +60,6 @@ func FindTestCrdNames(clusterCrds []*apiextv1.CustomResourceDefinition, crdFilte
 			}
 		}
 	}
+	log.Info("Found %d CRDs in the cluster", len(targetCrds))
 	return targetCrds
 }
