@@ -17,6 +17,7 @@
 package operator
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
@@ -372,6 +373,8 @@ func testOperatorPodsRunAsNonRoot(check *checksdb.Check, env *provider.TestEnvir
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 
+	fmt.Println("env.CSVToPodListMap", env.CSVToPodListMap)
+
 	for csv, pods := range env.CSVToPodListMap {
 		check.LogInfo("Csv: %q", csv)
 		for _, pod := range pods {
@@ -382,7 +385,7 @@ func testOperatorPodsRunAsNonRoot(check *checksdb.Check, env *provider.TestEnvir
 					check.LogInfo("Container %q created by the operator is run as not root", c.Name)
 					compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(c.Namespace, c.Name, "Container has been found is run as not root", true))
 				} else {
-					check.LogError("Pod %q created by the operator is run as root", pod.Name)
+					check.LogError("Container %q created by the operator is run as root", c.Name)
 					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(pod.Namespace, pod.Name, "Container has been found is run as root", false))
 				}
 			}

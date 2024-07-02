@@ -195,8 +195,12 @@ func (c *Container) IsReadOnlyRootFilesystem(logger *log.Logger) bool {
 }
 
 func (c *Container) IsContainerRunAsNonRoot() bool {
-	if c.SecurityContext != nil && c.SecurityContext.RunAsNonRoot != nil {
-		return *c.SecurityContext.RunAsNonRoot
+	if c.SecurityContext != nil {
+		if c.SecurityContext.RunAsNonRoot != nil {
+			return *c.SecurityContext.RunAsNonRoot
+		} else if c.SecurityContext.RunAsUser == nil {
+			return true
+		}
 	}
 	return false
 }
